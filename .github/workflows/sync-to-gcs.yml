@@ -35,4 +35,4 @@ jobs:
           sudo apt-get install -y google-cloud-cli
 
           # Sync repository files to the GCS bucket, excluding license, readme, and JSON files
-          gsutil -m rsync -r -x "(?i)^(LICENSE|README.*|.*\.json)$" . gs://osd-scripts  # Replace with your GCS bucket name
+          gsutil -m rsync -r -x "(?i)^(LICENSE|README.*|.*\.json)$" . gs://osd-scripts2  # Replace with your GCS bucket name
