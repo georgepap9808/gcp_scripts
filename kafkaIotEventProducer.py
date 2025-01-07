@@ -12,7 +12,7 @@ import time
 
 # Set up GCS client and download the file
 client = storage.Client()
-bucket = client.get_bucket("osd-scripts")
+bucket = client.get_bucket("osd-scripts2")
 blob = bucket.blob("spark_config_delta.py")
 blob.download_to_filename("/tmp/spark_config_delta.py")
 
