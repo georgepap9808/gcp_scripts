@@ -50,7 +50,7 @@ def create_kafka_to_hudi_processor(spark_session, iDBSchema, iTable):
         """Process each batch of Kafka data and write to Hudi"""
 
         print(f"Processing batch: {batch_id}")
-        table_path = f"gs://osd-data/{iDBSchema}.db/{iTable}"
+        table_path = f"gs://osd-data2/{iDBSchema}.db/{iTable}"
 
         try:
             # Create schema if not exists
@@ -177,7 +177,7 @@ def main():
         query = df_kafka.writeStream \
             .foreachBatch(processor) \
             .outputMode("append") \
-            .option("checkpointLocation", f"gs://osd-data/checkpoints/{iDBSchema}.db/{iTable}") \
+            .option("checkpointLocation", f"gs://osd-data2/checkpoints/{iDBSchema}.db/{iTable}") \
             .trigger(processingTime='1 minute') \
             .start()
 
