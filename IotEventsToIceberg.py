@@ -8,7 +8,7 @@ import sys
 
 # Set up GCS client and download the file
 client = storage.Client()
-bucket = client.get_bucket("osd-scripts")
+bucket = client.get_bucket("osd-scripts2")
 blob = bucket.blob("spark_config_iceberg.py")
 blob.download_to_filename("/tmp/spark_config_iceberg.py")
 
@@ -51,7 +51,7 @@ def process_kafka_batch(spark, df, batch_id, db_schema, table_name):
         print(f"Processing batch {batch_id} for table {db_schema}.{table_name}")
 
         # Get table location path
-        table_path = f"gs://osd-data/{db_schema}.db/{table_name}"
+        table_path = f"gs://osd-data2/{db_schema}.db/{table_name}"
 
         # Cast Kafka message format
         kafka_df = df.selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)", "timestamp")
@@ -160,7 +160,7 @@ def main():
         table_name = "iot_events"
 
         # Clean up existing table
-        table_loc = f"gs://osd-data/{db_name}.db/{table_name}"
+        table_loc = f"gs://osd-data2/{db_name}.db/{table_name}"
         spark.sql(f"DROP TABLE IF EXISTS {db_name}.{table_name}")
 
         print("Setting up Kafka stream...")
@@ -181,7 +181,7 @@ def main():
             spark, df, batch_id, db_name, table_name
         )) \
             .outputMode("append") \
-            .option("checkpointLocation", f"gs://osd-data/checkpoints/{db_name}/{table_name}") \
+            .option("checkpointLocation", f"gs://osd-data2/checkpoints/{db_name}/{table_name}") \
             .trigger(processingTime='1 minute') \
             .start()
 

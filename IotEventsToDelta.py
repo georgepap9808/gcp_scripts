@@ -9,7 +9,7 @@ import sys
 
 # Set up GCS client and download the file
 client = storage.Client()
-bucket = client.get_bucket("osd-scripts")
+bucket = client.get_bucket("osd-scripts2")
 blob = bucket.blob("spark_config_delta.py")
 blob.download_to_filename("/tmp/spark_config_delta.py")
 
@@ -53,7 +53,7 @@ def create_kafka_to_delta_processor(spark_session, db_name, table_name):
         """Process each batch of Kafka data and write to Delta Lake"""
 
         print(f"Processing batch: {batch_id}")
-        table_loc = f"gs://osd-data/{db_name}.db/{table_name}"
+        table_loc = f"gs://osd-data2/{db_name}.db/{table_name}"
 
         try:
             # Cast Kafka message format
@@ -148,7 +148,7 @@ def main():
         table_name = "iot_events"
 
         # Clean up existing table
-        table_loc = f"gs://osd-data/{db_name}.db/{table_name}"
+        table_loc = f"gs://osd-data2/{db_name}.db/{table_name}"
         spark.sql(f"DROP TABLE IF EXISTS {db_name}.{table_name}")
 
         print("Setting up Kafka stream...")
@@ -170,7 +170,7 @@ def main():
         query = df_kafka.writeStream \
             .foreachBatch(processor) \
             .outputMode("append") \
-            .option("checkpointLocation", f"gs://osd-data/checkpoints/{db_name}/{table_name}") \
+            .option("checkpointLocation", f"gs://osd-data2/checkpoints/{db_name}/{table_name}") \
             .trigger(processingTime='1 minute') \
             .start()
 
